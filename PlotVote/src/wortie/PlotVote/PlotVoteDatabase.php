@@ -25,15 +25,17 @@ class PlotVoteDatabase {
     }
     
     public function initialize() {
+		## username VARCHAR(16) PRIMARY KEY, Removed as username doesn't have to be a primary key
         $this->sqlite->exec("CREATE TABLE IF NOT EXISTS plots (
-         username VARCHAR(16) PRIMARY KEY,
+         username,
 		 plot INT,
 		 plotvotes INT
         )");
     }
 
     public function regPlotEnty($owner, Plot $plot, int $votes) { #Should fix Error when player has multiple plots
-        $stmt = $this->sqlite->prepare("INSERT or IGNORE INTO plots (
+        #$stmt = $this->sqlite->prepare("INSERT or IGNORE INTO plots (
+        $stmt = $this->sqlite->prepare("INSERT INTO plots (
           username,
           plot,
 		  plotvotes
