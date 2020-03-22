@@ -32,8 +32,8 @@ class PlotVoteDatabase {
         )");
     }
 
-    public function regPlotEnty($owner, Plot $plot, int $votes) {
-        $stmt = $this->sqlite->prepare("INSERT INTO plots (
+    public function regPlotEnty($owner, Plot $plot, int $votes) { #Should fix Error when player has multiple plots
+        $stmt = $this->sqlite->prepare("INSERT or IGNORE INTO plots (
           username,
           plot,
 		  plotvotes
