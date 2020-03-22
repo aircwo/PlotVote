@@ -1,0 +1,31 @@
+name: PlotVote
+main: wortie\PlotVote\PlotVote
+version: 1.0.0
+api: 3.11.6
+load: POSTWORLD
+author: wortie
+description: This Plugin was designed for Creative servers to rate a players plot.
+depend: MyPlot
+commands:
+ plotvote:
+  description: "Upvote a plot"
+  usage: "/examplecommand"
+  permission: plotvote.command
+ pvtop:
+  permission: plotvote.command.top
+ pvlb:
+  permission: plotvote.command.lb
+ remlb:
+  permission: plotvote.command.lb
+permissions:
+ plotvote.command.lb:
+  default: op
+ plotvote:
+  default: true
+  description: "PlotVote Root Node"
+  children:
+   plotvote.command:
+    default: true
+    description: "Allows the use of /plotvote"
+   plotvote.command.top:
+    default: true
