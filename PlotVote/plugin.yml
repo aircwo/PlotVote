@@ -4,19 +4,16 @@ version: 1.0.0
 api: 3.11.6
 load: POSTWORLD
 author: wortie
-description: This Plugin was designed for Creative servers to rate a players plot.
+description: This Plugin was designed for Creative/Plots Servers to rate a players plot.
 depend: MyPlot
 commands:
  plotvote:
   description: "Upvote a plot"
-  usage: "/examplecommand"
+  usage: "/plotvote"
   permission: plotvote.command
- pvtop:
-  permission: plotvote.command.top
- pvlb:
-  permission: plotvote.command.lb
- remlb:
-  permission: plotvote.command.lb
+ pv:
+  permission: plotvote.command.pv
+  usage: "/pv <top|setlb|remlb>"
 permissions:
  plotvote.command.lb:
   default: op
@@ -27,5 +24,5 @@ permissions:
    plotvote.command:
     default: true
     description: "Allows the use of /plotvote"
-   plotvote.command.top:
+   plotvote.command.pv:
     default: true

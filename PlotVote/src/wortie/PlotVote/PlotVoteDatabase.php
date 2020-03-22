@@ -52,6 +52,8 @@ class PlotVoteDatabase {
 		# TODO
     }
 	
+	# TODO add api for multiple plots, all must be saved by unique ID not name
+	
 	public function getPlotVotes($plot){
 		$votes = $this->sqlite->querySingle("SELECT plotvotes FROM plots WHERE plot='$plot'");
         return $votes;
@@ -95,9 +97,9 @@ class PlotVoteDatabase {
         for($i = 1; $i <= 10; $i++) {
             $row = $result->fetchArray(SQLITE3_ASSOC);
             if(is_array($row) and !($end)) {
-                $message .= "\n{$i}. {$row["username"]} §7with Votes§a {$row["plotvotes"]}";
+                $message .= "\n{$i}. {$row["username"]} §7with Votes§a {$row["plotvotes"]}§7";
             } else {
-                $message .= "\n{$i}. Unknown";
+                $message .= "\n{$i}. §7Unknown";
                 $end = true;
             }
         }

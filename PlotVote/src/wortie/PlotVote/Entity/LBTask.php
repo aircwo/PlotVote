@@ -13,8 +13,6 @@ use wortie\PlotVote\PlotVote;
 
 class LBTask extends Task {
 	
-	private $database;
-	
 	public function onRun(int $currentTick) {
 		$level = Server::getInstance()->getDefaultLevel();
 		foreach ($level->getEntities() as $entity) {
@@ -27,6 +25,5 @@ class LBTask extends Task {
 			}
 		}
 	}
-
 	
 }

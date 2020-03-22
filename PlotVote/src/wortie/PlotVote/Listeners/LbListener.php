@@ -7,7 +7,6 @@ use pocketmine\Player;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\utils\TextFormat;
 use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\player\PlayerDeathEvent;
 
 use wortie\PlotVote\PlotVote;
 use wortie\PlotVote\Entity\LbEntity;

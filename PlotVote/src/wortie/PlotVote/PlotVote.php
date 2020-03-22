@@ -26,6 +26,7 @@ class PlotVote extends PluginBase {
 
 	private $MyPlot;
 	private $database;
+	#TODO, should the command be able to be used every 24 hours or a one time thing
 	private $commandstatus = true;
 	public $commandCooldown = [ ];
 	public $commandCooldownTime = [ ];
@@ -49,7 +50,7 @@ class PlotVote extends PluginBase {
 			case "plotvote":
 			##EXPERIMENTAL COOLDOWN
 			if($this->commandstatus){
-				if(!isset($this->commandCooldown[$sender->getName()])){
+				if(!isset($this->commandCooldown[$sender->getName()])){ #Figure out the best way to do this, maybe in a json file and saved on a session
 					$plot = $this->MyPlot->getPlotByPosition($sender);
 					if($plot === null || $plot->owner === null) {  # Checks if player is in/on a plot
 						$sender->sendMessage(TextFormat::RED . "Your not on a plot or that plot isn't claimed.");
@@ -88,31 +89,40 @@ class PlotVote extends PluginBase {
 			$this->commandstatus = !$this->commandstatus;
 			return true;
 			break;
-			case 'pvtop':
-				$message = $this->database->getTop();
-				$sender->sendMessage($message);
-				return true;
-			break;
-			case 'remlb':
-				if ($sender->isOp()) {
-					$npc = Server::getInstance()->getDefaultLevel()->getEntities();
-					foreach ($npc as $entity) {
-						if ($entity instanceof Leaderboard) {
-							$entity->close();
+			case 'pv':
+				if (isset($args[0])) {
+					switch ($args[0]) {
+					case 'top':
+						$message = $this->database->getTop();
+						$sender->sendMessage($message);
+						return true;
+					break;
+					case 'remlb':
+						if ($sender->isOp()) {
+							$npc = $this->getServer()->getDefaultLevel()->getEntities();
+							foreach ($npc as $entity) {
+								if ($entity instanceof Leaderboard) {
+									$entity->close();
+								}
+							}
+						} else {
+							$sender->sendMessage("You cant use this command!");
 						}
+						return true;
+					break;
+					case 'setlb':
+						if ($sender->isOp()) {
+							$this->setLeaderboardEntity($sender->getPlayer());
+						} else {
+							$sender->sendMessage("You cant use this command!");
+						}
+						return true;
+					break;
+					
 					}
-				} else {
-					$sender->sendMessage("You cant use this command!");
 				}
 				return true;
 			break;
-			case 'pvlb':
-				if ($sender->isOp()) {
-					$this->setLeaderboardEntity($sender->getPlayer());
-				} else {
-					$sender->sendMessage("You cant use this command!");
-				}
-			return true;
 			default:
 				return false;
 		}
