@@ -10,6 +10,4 @@
   - LeaderBoard
  # Commands: 
   - /plotvote
-  - /pvlb
-  - /remlb
-  - /pvtop
+  - /pv <top|remlb|setlb>
