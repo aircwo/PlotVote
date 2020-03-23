@@ -1,10 +1,8 @@
 --- # Poggit-CI Manifest.
+build-by-default: true
 branches:
   - master
 projects:
   PlotVote:
     path: ""
-    libs:
-      - src: "wortie/PlotVote/PlotVote"
-        version: "^1.0.0"
 ...
