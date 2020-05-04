@@ -1,10 +1,11 @@
 name: PlotVote
 main: wortie\PlotVote\PlotVote
-version: 1.1.1
+version: 1.1.2
 api: 3.11.6
 mcpe-protocol: [389, 390]
 load: POSTWORLD
 author: wortie
+website: https://www.newcrestmc.net/
 description: This Plugin was designed for Creative/Plots Servers to rate a players plot.
 depend: MyPlot
 commands:
