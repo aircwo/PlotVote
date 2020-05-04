@@ -74,7 +74,9 @@ class PlotVote extends PluginBase {
 					$this->addVote($id);
 					$votes = $this->getVotes($id); 
 					$sender->sendMessage("§7You Upvoted§a $owner §7Plot.");
-					$sender->sendMessage("§7Plot: $plot now has: §a$votes §7votes.");
+					$sender->sendMessage("§7Plot: §a$plot now has: §a$votes §7votes.");
+					$owner->sendMessage("§a$sender §7has upvoted your plot!");
+					$owner->sendMessage("§7Your Plot: §a$plot §7now has: §a$votes §7votes.");
 					$this->commandCooldown[$sender->getName()] = $sender->getName();
 					$time = "21600"; #6 hours
 					$this->commandCooldownTime[$sender->getName()] = $time;
@@ -83,7 +85,8 @@ class PlotVote extends PluginBase {
 					$sender->sendPopup(TextFormat::RED."You can't vote for a plot for another: ".$this->commandCooldownTime[$sender->getName()]." seconds.");
 				}
 			return true;
-			break;
+			break; 
+			# TODO add myvotes command to allow players to check plot votes or when over plots
 			case 'pv':
 				if (isset($args[0])) {
 					switch ($args[0]) {
