@@ -21,7 +21,8 @@ class LBTask extends Task {
 				$entity->setImmobile(true);
 				$entity->setScale(1);
 				$pv = Server::getInstance()->getPluginManager()->getPlugin("PlotVote");
-				$entity->setNameTag($pv->getDatabase()->getTop());
+				$entity->setNameTag(TextFormat::Colorize("Top Most Voted Plots:"));
+				$entity->setScoreTag($pv->getDatabase()->getTop());
 			}
 		}
 	}
