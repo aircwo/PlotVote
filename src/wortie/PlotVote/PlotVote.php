@@ -96,7 +96,9 @@ class PlotVote extends PluginBase {
 							$sender->sendMessage(TextFormat::Colorize("&cYou're not on a plot or that plot isn't claimed."));
 							return true;
 						}
-						$message = "&7This plot has:&a ".$this->database->getPlotVotes($plot)." &7votes.";
+						$id = $this->getPlotById($plot);
+						$votes = $this->getVotes($id); 
+						$message = "&7This plot has:&a $votes &7votes.";
 						$sender->sendMessage(TextFormat::Colorize($message));
 						return true;
 					break;

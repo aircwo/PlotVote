@@ -81,6 +81,12 @@ class PlotVoteDatabase {
 		$result->finalize();
 	}
 	
+	public function updateOwner(string $player, $plot) {
+		$stmt = $this->sqlite->prepare("UPDATE plots SET username='$player' WHERE plot='$plot'");
+		$result = $stmt->execute();
+		$result->finalize();
+	}
+	
 	public function resetVotes($plot) {
 		$result = 0;
 		$stmt = $this->sqlite->prepare("UPDATE plots SET plotvotes='$result' WHERE plot='$plot'");
