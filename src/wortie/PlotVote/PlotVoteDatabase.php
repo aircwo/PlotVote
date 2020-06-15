@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace wortie\PlotVote;
 
 use CrestStats\session\Session;
@@ -29,12 +31,11 @@ class PlotVoteDatabase {
         $this->sqlite->exec("CREATE TABLE IF NOT EXISTS plots (
          username,
 		 plot INT,
-		 plotvotes INT,
-		 plotcoords copy how myplot does it
+		 plotvotes INT
         )");
     }
 
-    public function regPlotEnty($owner, Plot $plot, int $votes) { #Should fix Error when player has multiple plots
+    public function regPlotEnty($owner, Plot $plot, int $votes) {
         #$stmt = $this->sqlite->prepare("INSERT or IGNORE INTO plots (
         $stmt = $this->sqlite->prepare("INSERT INTO plots (
           username,
@@ -51,11 +52,11 @@ class PlotVoteDatabase {
         $stmt->execute();
     }
 	
-	public function remPlotEnty(Player $player, Plot $plot, int $votes) {
-		# TODO
+	public function remPlotEnty(Plot $plot) {
+		$stmt = $this->sqlite->prepare("DELETE FROM plots WHERE plot='$plot'");
+		$result = $stmt->execute();
+		$result->finalize();
     }
-	
-	# TODO add api for multiple plots, all must be saved by unique ID not name
 	
 	public function getPlotVotes($plot){
 		$votes = $this->sqlite->querySingle("SELECT plotvotes FROM plots WHERE plot='$plot'");
@@ -87,9 +88,6 @@ class PlotVoteDatabase {
 		$result->finalize();
 	}
     
-    /**
-     * @return string
-     */
     public function getTop(): string {
         $result = $this->sqlite->query("SELECT * FROM (SELECT * FROM plots ORDER BY plotvotes DESC)orderedusers
         LIMIT 10");

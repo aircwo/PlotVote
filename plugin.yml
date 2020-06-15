@@ -1,7 +1,7 @@
 name: PlotVote
 main: wortie\PlotVote\PlotVote
-version: 1.1.2
-api: 3.11.6
+version: 1.3.0
+api: 3.12.0
 mcpe-protocol: [389, 390]
 load: POSTWORLD
 author: wortie
@@ -15,7 +15,7 @@ commands:
   permission: plotvote.command
  pv:
   permission: plotvote.command.pv
-  usage: "/pv <top|setlb|remlb>"
+  usage: "/pv <top|info|setlb|remlb>"
 permissions:
  plotvote.command.lb:
   default: op

@@ -11,7 +11,6 @@ use pocketmine\utils\TextFormat;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Skin;
 use pocketmine\math\Vector3;
-
 use pocketmine\Player;
 
 use wortie\PlotVote\Cooldown;
@@ -26,8 +25,8 @@ class PlotVote extends PluginBase {
 
 	private $MyPlot;
 	private $database;
-	public $commandCooldown = [ ];
-	public $commandCooldownTime = [ ];
+	public $commandCooldown = [];
+	public $commandCooldownTime = [];
 
 	public function onEnable() : void{
 		$this->MyPlot = $this->getServer()->getPluginManager()->getPlugin("MyPlot");
@@ -46,10 +45,10 @@ class PlotVote extends PluginBase {
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
 		switch($command->getName()){
 			case "plotvote":
-				if(!isset($this->commandCooldown[$sender->getName()])){ #Figure out the best way to do this, maybe in a json file and saved on a session
+				if(!isset($this->commandCooldown[$sender->getName()])){
 					$plot = $this->MyPlot->getPlotByPosition($sender);
 					if($plot === null || $plot->owner === null) {  # Checks if player is in/on a plot
-						$sender->sendMessage(TextFormat::RED . "Your not on a plot or that plot isn't claimed.");
+						$sender->sendMessage(TextFormat::RED . "You're not on a plot or that plot isn't claimed.");
 						return true;
 					}
 					$owner = $plot->owner;
@@ -81,18 +80,26 @@ class PlotVote extends PluginBase {
 					$time = "21600"; #6 hours
 					$this->commandCooldownTime[$sender->getName()] = $time;
 				}else{
-					$number = $this->commandCooldownTime[$sender->getName()];
 					$sender->sendPopup(TextFormat::RED."You can't vote for a plot for another: ".$this->commandCooldownTime[$sender->getName()]." seconds.");
 				}
 			return true;
 			break; 
-			# TODO add myvotes command to allow players to check plot votes or when over plots
 			case 'pv':
 				if (isset($args[0])) {
 					switch ($args[0]) {
 					case 'top':
 						$message = $this->database->getTop();
 						$sender->sendMessage($message);
+						return true;
+					break;
+					case 'info':
+						$plot = $this->MyPlot->getPlotByPosition($sender);
+						if($plot === null || $plot->owner === null) {
+							$sender->sendMessage(TextFormat::Colorize("&cYou're not on a plot or that plot isn't claimed."));
+							return true;
+						}
+						$message = "&7This plot has:&a ".$this->database->getPlotVotes($plot)." &7votes.";
+						$sender->sendMessage(TextFormat::Colorize($message));
 						return true;
 					break;
 					case 'remlb':
@@ -104,7 +111,7 @@ class PlotVote extends PluginBase {
 								}
 							}
 						} else {
-							$sender->sendMessage("You cant use this command!");
+							$sender->sendMessage(TextFormat::RED . "You cant use this command!");
 						}
 						return true;
 					break;
@@ -112,7 +119,7 @@ class PlotVote extends PluginBase {
 						if ($sender->isOp()) {
 							$this->setLeaderboardEntity($sender->getPlayer());
 						} else {
-							$sender->sendMessage("You cant use this command!");
+							$sender->sendMessage(TextFormat::RED . "You cant use this command!");
 						}
 						return true;
 					break;
@@ -128,10 +135,6 @@ class PlotVote extends PluginBase {
 	
 	public function getPlotById(Plot $plot): int { # This simply returns the ID of a plot, this value will be bound with the data entry Therefor allowing defrentiation between plot votes
 		return $plot->id;
-	}
-	
-	public function getPlotCoords($plot){
-		return $plot;
 	}
 	
 	public function addDbEntry(string $player, $plot, int $votes){ # This registers a database entry, Name, Plot, Votes
@@ -150,8 +153,8 @@ class PlotVote extends PluginBase {
 		$human->spawnToAll();
 	}
 	
-	public function remDbEntry($player, $plot, int $votes){ #TODO
-		$this->database->remPlotEnty($player, $plot, $votes);
+	public function remDbEntry(Plot $plot){
+		$this->database->remPlotEnty($plot);
 		return;
 	}
 	
@@ -163,18 +166,16 @@ class PlotVote extends PluginBase {
 		$this->getServer()->getPluginManager()->registerEvents(new LbListener($this), $this);
 	}
 	
-	public function verifyDbEntry(Player $player){ # This might not be needed if checking for votes..
-		$this->database->verifyPlayerInDB($player);
-		return;
+	public function verifyDbEntry(Player $player): bool {
+		return $this->database->verifyPlayerInDB($player->getName());
 	}
 	
-	public function getVotes($plot){
-		$votes = $this->database->getPlotVotes($plot);
-		return $votes;
+	public function getVotes($plot): int{
+		return $this->database->getPlotVotes($plot);
 	}
 	
 	public function addVote($plot){
-		$newvotes = $this->database->setVotes($plot);
+		$this->database->setVotes($plot);
 		return;
 	}
 	
